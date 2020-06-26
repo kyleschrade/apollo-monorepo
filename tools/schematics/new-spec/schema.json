@@ -13,7 +13,7 @@
       "x-prompt": "Package name: "
     },
     "portNumber": {
-      "type": "string",
+      "type": "number",
       "description": "Library name",
       "$default": {
         "$source": "argv",

@@ -55,7 +55,7 @@ function generateFiles(schema: ApplicationSchema): Rule {
   console.log({ ...schema, ...strings, ...names(schema.name) });
   const templateSource = apply(url('./files'), [
     //move(getProjectConfig(tree, schema.name).root),
-    template({ ...schema, ...strings, ...names(schema.name) }),
+    applyTemplates({ ...schema, ...strings, ...names(schema.name) }),
     formatFiles({ skipFormat: false }),
   ]);
 

@@ -25,13 +25,14 @@ import {
 
 import { getProjectConfig } from '@nrwl/workspace';
 import { strings } from '@angular-devkit/core';
+import { ApplicationSchema } from './schema';
 
 /**
  * Depending on your needs, you can change this to either `Library` or `Application`
  */
 const projectType = ProjectType.Application;
 
-function normalizeOptions(options: any): any {
+function normalizeOptions(options: ApplicationSchema): any {
   const projectName = toFileName(options.name);
   const projectDirectory = options.directory
     ? `${toFileName(options.directory)}/${projectName}`
@@ -50,17 +51,18 @@ function normalizeOptions(options: any): any {
   };
 }
 
-function generateFiles(schema: any): Rule {
+function generateFiles(schema: ApplicationSchema): Rule {
+  console.log({ ...schema, ...strings, ...names(schema.name) });
   const templateSource = apply(url('./files'), [
     //move(getProjectConfig(tree, schema.name).root),
-    applyTemplates({ ...schema, ...strings, ...names(schema.name) }),
+    template({ ...schema, ...strings, ...names(schema.name) }),
     formatFiles({ skipFormat: false }),
   ]);
 
   return mergeWith(templateSource);
 }
 
-export default function (schema: any): Rule {
+export default function (schema: ApplicationSchema): Rule {
   return (tree: Tree, context: SchematicContext) => {
     console.log(JSON.stringify(schema));
     const normalizedOptions = normalizeOptions(schema);

@@ -51,17 +51,13 @@ function normalizeOptions(options: any): any {
 }
 
 function generateFiles(schema: any): Rule {
-  return (tree: Tree, context: SchematicContext) => {
-    context.logger.info('adding NOTES.md to lib');
+  const templateSource = apply(url('./files'), [
+    //move(getProjectConfig(tree, schema.name).root),
+    applyTemplates({ ...schema, ...strings, ...names(schema.name) }),
+    formatFiles({ skipFormat: false }),
+  ]);
 
-    const templateSource = apply(url('./files'), [
-      //move(getProjectConfig(tree, schema.name).root),
-      applyTemplates({ ...schema, ...strings, ...names(schema.name) }),
-      formatFiles({ skipFormat: false }),
-    ]);
-
-    return chain([mergeWith(templateSource)])(tree, context);
-  };
+  return mergeWith(templateSource);
 }
 
 export default function (schema: any): Rule {

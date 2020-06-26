@@ -6,6 +6,7 @@ import {
   toFileName,
   updateWorkspace,
   addDepsToPackageJson,
+  formatFiles,
 } from '@nrwl/workspace';
 
 import {
@@ -56,6 +57,7 @@ function generateFiles(schema: any): Rule {
     const templateSource = apply(url('./files'), [
       //move(getProjectConfig(tree, schema.name).root),
       applyTemplates({ ...schema, ...strings, ...names(schema.name) }),
+      formatFiles({ skipFormat: false }),
     ]);
 
     return chain([mergeWith(templateSource)])(tree, context);

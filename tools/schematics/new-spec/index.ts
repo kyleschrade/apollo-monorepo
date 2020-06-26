@@ -19,6 +19,7 @@ import {
   url,
   externalSchematic,
   template,
+  applyTemplates,
 } from '@angular-devkit/schematics';
 
 import { getProjectConfig } from '@nrwl/workspace';
@@ -54,7 +55,7 @@ function generateFiles(schema: any): Rule {
 
     const templateSource = apply(url('./files'), [
       //move(getProjectConfig(tree, schema.name).root),
-      template({ ...schema, ...strings, ...names(schema.name) }),
+      applyTemplates({ ...schema, ...strings, ...names(schema.name) }),
     ]);
 
     return chain([mergeWith(templateSource)])(tree, context);
